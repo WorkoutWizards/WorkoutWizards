@@ -4,7 +4,7 @@ from app.models.user import User
 
 class UserExercise(SQLModel, table =True):
     id:int = Field(primary_key = True)
-    routine_id: Optional[int] = Field(foreign_key="routine.id")
+    routine_id: Optional[int] = Field(foreign_key="routine.id")#
     exercise_id: Optional[int] = Field(foreign_key="exercise.id")
 
 class Routine(SQLModel, table = True):
