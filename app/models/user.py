@@ -1,7 +1,7 @@
 from sqlmodel import Field, SQLModel
 from typing import Optional
 from pydantic import EmailStr
-
+from app.models.models import *
 
 class UserBase(SQLModel,):
     username: str = Field(index=True, unique=True)
@@ -18,6 +18,9 @@ class User(UserBase, table=True):
     age:Optional[int]
     gender:Optional[str]
     calorie_goal:Optional[float]
+    routines: list["Routine"] = Relationship(back_populates="user")
+    meals: list["Meal"] = Relationship(back_populates="user")
+    
     user_bmi:Optional[float]
     #call this method to calculate the userBMI and just pass the value it returns
     #in the attribute above
