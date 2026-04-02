@@ -17,8 +17,8 @@ class User(UserBase, table=True):
     age:Optional[int]
     gender:Optional[str]
     calorie_goal:Optional[float]
-    routines: list["Routine"] = Relationship(back_populates="user")
-    meals: list["Meal"] = Relationship(back_populates="user")
+    # routines: list["Routine"] = Relationship(back_populates="user")
+    # meals: list["Meal"] = Relationship(back_populates="user")
     
     user_bmi:Optional[float]
     #call this method to calculate the userBMI and just pass the value it returns
