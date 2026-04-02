@@ -1,6 +1,6 @@
 from sqlmodel import Field, SQLModel,Relationship
 from typing import Optional
-from app.models.user import *
+from app.models.user import User
 
 
 class UserRoutine(SQLModel, table =True):
