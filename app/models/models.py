@@ -1,6 +1,6 @@
 from sqlmodel import Field, SQLModel,Relationship
 from typing import Optional
-from app.models.user import User
+
 
 class UserExercise(SQLModel, table =True):
     routine_id: int = Field(foreign_key="routine.id", primary_key = True)#
@@ -18,9 +18,9 @@ class Exercise(SQLModel, table = True):
     muscle:str
     difficulty:Optional[str]
     instructions:Optional[str]
-    equip1:Optional[str] |None##
-    equip2:Optional[str] |None
-    equip3:Optional[str] |None
+    equip1:Optional[str] 
+    equip2:Optional[str] 
+    equip3:Optional[str] 
     safety:Optional[str]
     routines:list["Routine"] =Relationship(back_populates = "exercises",
                                         link_model = UserExercise)
