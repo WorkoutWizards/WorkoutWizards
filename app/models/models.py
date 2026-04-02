@@ -11,8 +11,7 @@ class Routine(SQLModel, table = True):
     id:int = Field(primary_key = True)
     user_id:int = Field(foreign_key = "user.id")
     user: Optional[User] = Relationship(back_populates = "routines")
-    exercises:list["Exercise"] = Relationship(back_populates = "routines",
-                                               link_model = UserExercise)
+    exercises:list["Exercise"] = Relationship(back_populates = "routines")#,link_model = UserRoutine)
 
 class Exercise(SQLModel, table = True):
     id:int = Field(primary_key = True)
@@ -25,8 +24,7 @@ class Exercise(SQLModel, table = True):
     equip2:Optional[str] 
     equip3:Optional[str] 
     safety:Optional[str]
-    routines:list["Routine"] =Relationship(back_populates = "exercises",
-                                        link_model = UserExercise)
+    routines:list["Routine"] =Relationship(back_populates = "exercises")#,link_model = UserRoutine)
 
 
     
@@ -39,7 +37,7 @@ class Meal(SQLModel, table = True):
     name:str
     user_id:int = Field(foreign_key = "user.id")
     user: Optional[User] = Relationship(back_populates = "meals")
-    recipes: list["Recipe"] = Relationship(back_populates="meals",link_model=MealRecipe   )
+    recipes: list["Recipe"] = Relationship(back_populates="meals")#,link_model=MealRecipe   )
 
 class Recipe(SQLModel, table = True):
     id:int = Field(primary_key = True)
@@ -55,5 +53,5 @@ class Recipe(SQLModel, table = True):
     carb_total_g:Optional[float]
     fiber_g:Optional[float]
     sugar_g:Optional[float]
-    meals: list["Meal"] = Relationship(back_populates="recipes",link_model=MealRecipe )
+    meals: list["Meal"] = Relationship(back_populates="recipes")#,link_model=MealRecipe )
     
