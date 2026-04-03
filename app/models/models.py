@@ -10,7 +10,7 @@ class UserRoutine(SQLModel, table =True):
 class Routine(SQLModel, table = True):
     id:int = Field(primary_key = True)
     user_id:int = Field(foreign_key = "user.id")
-    user: Optional[User] = Relationship(back_populates = "routines")
+    user: Optional["User"] = Relationship(back_populates = "routines")
     exercises:list["Exercise"] = Relationship(back_populates = "routines",link_model = UserRoutine)
 
 class Exercise(SQLModel, table = True):

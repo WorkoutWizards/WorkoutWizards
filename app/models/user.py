@@ -2,6 +2,7 @@ from sqlmodel import Field, SQLModel,Relationship
 from typing import Optional
 from pydantic import EmailStr
 
+
 class UserBase(SQLModel,):
     username: str = Field(index=True, unique=True)
     email: EmailStr = Field(index=True, unique=True)
