@@ -25,15 +25,17 @@ async def get_workout(
 @router.post("/routines/")
 async def create_routine(user: AuthDep, db: SessionDep,request:Request,
                          name = Form()):
+    
+    
     routine = Routine(user_id=user.id,name = name,user = user)
     db.add(routine)
     db.commit()
     db.refresh(routine)
     getroutines = db.exec(select(Routine).where(Routine.user_id == user.id)).all()
-    flash(request, "Routine created! Now add Workouts to Routine")
+    flash(request, "Routine created! Now Go To Workout Page to Exercises")
     return templates.TemplateResponse(
         request = request,
-        name = "routines.html",
+        name = "workout.html",
         context = {
             "user":user,
             #"selected_routine_id":routine.id
@@ -42,7 +44,7 @@ async def create_routine(user: AuthDep, db: SessionDep,request:Request,
     )
 
 @router.get("/exercises/")
-async def create_routine(user: AuthDep, db: SessionDep,request:Request,
+async def get_routine(user: AuthDep, db: SessionDep,request:Request,
                          routine_id = Query()):
     routine = db.get(Routine,routine_id)
 
@@ -126,4 +128,26 @@ async def edit_exercise(
             "user": user,
             "routines": getroutines,
         }
+    )
+
+@router.post("/delete-routine/")
+async def delete_exercise(
+    user: AuthDep,
+    db: SessionDep,
+    request: Request,
+    routine_id=Form(),
+):
+    get_routine = db.get(Routine,routine_id)
+    
+    try:
+        for exercises in get_routine.exercises:
+            db.delete(exercises)
+        db.delete(get_routine)
+        db.commit()
+        flash(request, "Routine Deleted")
+    except Exception:
+        flash(request, "Could not delete Routine")
+    return RedirectResponse(
+        url = f"/workout?routine_id={routine_id}",
+         status_code=303
     )

@@ -85,8 +85,20 @@ async def add_exercise_toroutine(user:AuthDep, db:SessionDep, request:Request,
                       name = Form(), type = Form(), muscle = Form(), 
                         difficulty = Form()
                         ):   
+    findRoutEx = db.get(RoutineExercise,(routine_id,exercise_id))
+    if findRoutEx is not None:
+        flash(request,"Exercise already added to that Routine! Choose Another" )
+        redirect_url = f"/api/exercises?muscle={muscle}"
+        return RedirectResponse(
+          url= redirect_url, status_code=status.HTTP_303_SEE_OTHER)
+
     exercise = db.get(Exercise,exercise_id)
     routine = db.get(Routine,routine_id)
+    if routine is None:
+        flash(request,"Routine does not exist! Choose Another" )
+        redirect_url = f"/api/exercises?muscle={muscle}"
+        return RedirectResponse(
+         url= redirect_url, status_code=status.HTTP_303_SEE_OTHER)
     model_exercise = RoutineExercise(
         routine_id = routine_id,
         exercise_id = exercise_id)
@@ -115,8 +127,9 @@ async def view_routine(user:AuthDep, routine_id: int, db:SessionDep, request:Req
         "exercises": exercises
     })
 
+#endpoint to update exercise in that routine
 @router.post("/update-routines", response_model=RoutineExercise)
-def update_routine_exercise(user:AuthDep, db:SessionDep,request:Request,routine_id: int, exercise_id: int, sets: Optional[int] = None,
+def update_routine_inexercise(user:AuthDep, db:SessionDep,request:Request,routine_id: int, exercise_id: int, sets: Optional[int] = None,
                             reps: Optional[int] = None, rest_time: Optional[int] = None
                             ):
     
@@ -141,3 +154,23 @@ def update_routine_exercise(user:AuthDep, db:SessionDep,request:Request,routine_
         "exercises": routine_exercise.routine.exercises
         #gets the exercises from the backpopulates relationship
     })
+
+@router.post("/delete-exercise/", response_model=RoutineExercise)
+def delete_exercise_inroutine(user:AuthDep, db:SessionDep,request:Request, 
+                               exercise_id = Form(),routine_id = Form()
+                            
+):
+    routine_exercise = db.get(RoutineExercise,(routine_id,exercise_id))
+   
+
+    try:
+
+        db.delete(routine_exercise)
+        db.commit()
+        flash(request, "Exercise deleted from Routine")
+    except Exception:
+        flash(request, "Exercise could not be deleted from Routine")
+    return RedirectResponse(
+        url = f"/workout?exercise_id={exercise_id}&routine_id={routine_id}",
+         status_code=303
+    )
