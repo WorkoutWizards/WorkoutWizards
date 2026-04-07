@@ -5,6 +5,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from app.routers import templates, static_files, router, api_router
 from app.config import get_settings
 from contextlib import asynccontextmanager
+from app.routers import meals
 
 
 @asynccontextmanager
@@ -21,6 +22,7 @@ app = FastAPI(middleware=[
     lifespan=lifespan
 )   
 
+app.include_router(meals.router)
 app.include_router(router)
 app.include_router(api_router)
 app.mount("/static", static_files, name="static")
