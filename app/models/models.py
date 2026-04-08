@@ -76,7 +76,8 @@ class Meal(SQLModel, table = True):
 
 class Tracker(SQLModel, table = True):
    id: Optional[int] = Field(default=none, primary_key=True)
-   meal_id: int
+   meal_id: int =  Field(foreign_key="meal.id")
+   user_id: int =  Field(foreign_key="user.id")
    calories: int
    protein: int
    carbs: int
