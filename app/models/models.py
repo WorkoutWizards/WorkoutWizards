@@ -62,7 +62,7 @@ class Recipe(SQLModel, table = True):
     meals: list["Meal"] = Relationship(back_populates="recipes",link_model=MealRecipe )
 
 class Meal(SQLModel, table = True):
-   id: Optional[int] = Field(default=none, primary_key=True)
+   id: Optional[int] = Field(default=None, primary_key=True)
    name: str
    type: str
    image: str
@@ -75,7 +75,7 @@ class Meal(SQLModel, table = True):
    calories: int
 
 class Tracker(SQLModel, table = True):
-   id: Optional[int] = Field(default=none, primary_key=True)
+   id: Optional[int] = Field(default=None, primary_key=True)
    meal_id: int =  Field(foreign_key="meal.id")
    user_id: int =  Field(foreign_key="user.id")
    calories: int
