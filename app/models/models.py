@@ -1,5 +1,5 @@
 from sqlmodel import Field, SQLModel,Relationship
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, List
 if TYPE_CHECKING:                 #might breck the code
     from .user import User        #delete if it does
 
@@ -35,17 +35,16 @@ class Exercise(SQLModel, table = True):
   #USES LINK MODEL APPROACH for just the 2 keys  no attributes
 class MealRecipe(SQLModel, table = True):
    recipe_id:int = Field(foreign_key = "recipe.id", primary_key=True)
-   meal_id:int = Field(foreign_key = "meals.id", primary_key=True)
+   meal_id:int = Field(foreign_key = "meal.id", primary_key=True)
+
+class Recipe(SQLModel, table = True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str
+    ingredients: str
+    instructions: str
+    prep_time: str
+    meals: List["Meal"] = Relationship(back_populates="recipes", link_model=MealRecipe)
    
-
-class Meals(SQLModel, table = True):
-    id:int = Field(primary_key = True)
-    name:str
-    user_id:int = Field(foreign_key = "user.id")
-    user: Optional["User"] = Relationship(back_populates = "meals")
-    recipes: list["Recipe"] = Relationship(back_populates="meals",link_model=MealRecipe   )
-
-
 class Meal(SQLModel, table = True):
    id: Optional[int] = Field(default=None, primary_key=True)
    name: str
@@ -57,7 +56,8 @@ class Meal(SQLModel, table = True):
    protein: float
    cards: float
    fat: float
-   calories: int
+   calories: float
+    recipes: List["Recipe"] = Relationship(back_populates="meals", link_model=MealRecipe)
 
 class Tracker(SQLModel, table = True):
    id: Optional[int] = Field(default=None, primary_key=True)
@@ -68,10 +68,4 @@ class Tracker(SQLModel, table = True):
    carbs: float
    fat: float
 
-class Recipe(SQLModel, table = True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    name: str
-    ingredients: str
-    instructions: str
-    prep_time: str
     
