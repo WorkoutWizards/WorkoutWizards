@@ -17,10 +17,6 @@ def get_recipes(db: SessionDep):
 @router.get("/{recipe_id}")
 def get_recipe(recipe_id: int, db: SessionDep):
     recipe = db.get(Recipe, recipe_id)
-    
-    if not recipe:
-        return {"error":"Recipe not found"}
-
     return recipe
 
 @router.post("/")
