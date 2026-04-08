@@ -7,7 +7,7 @@ from . import router, templates
 from app.models.models import Meal, Tracker
 from sqlmodel import select
 
-router = APIPouter(prefix="/trackercalories", tags=["tracker"])
+router = APIRouter(prefix="/trackercalories", tags=["tracker"])
 
 @router.post("/add")
 def add_to_tracker(meal_id: int, db: SessionDep):
