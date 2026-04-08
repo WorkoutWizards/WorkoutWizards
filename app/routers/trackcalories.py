@@ -18,10 +18,10 @@ def add_to_tracker(meal_id: int, db: SessionDep):
 
     tracker = Tracker(
         meal_id= meal.id,
-        calories: meal.calories,
-        protein: meal.protein,
-        carbs: meal.carbs,
-        fat: meal.fat
+        calories= meal.calories,
+        protein= meal.protein,
+        carbs= meal.carbs,
+        fat= meal.fat
     )
 
     db.add(tracker)
