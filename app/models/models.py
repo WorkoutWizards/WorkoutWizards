@@ -59,7 +59,7 @@ class Recipe(SQLModel, table = True):
     carb_total_g:Optional[float]
     fiber_g:Optional[float]
     sugar_g:Optional[float]
-    meals: list["Meal"] = Relationship(back_populates="recipes",link_model=MealRecipe )
+    meals: list["Meals"] = Relationship(back_populates="recipes",link_model=MealRecipe )
 
 class Meal(SQLModel, table = True):
    id: Optional[int] = Field(default=None, primary_key=True)
