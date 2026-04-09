@@ -57,7 +57,7 @@ class Meal(SQLModel, table = True):
    carbs: float
    fat: float
    calories: float
-    recipes: List["Recipe"] = Relationship(back_populates="meals", link_model=MealRecipe)
+   recipes: List["Recipe"] = Relationship(back_populates="meals", link_model=MealRecipe)
 
 class Tracker(SQLModel, table = True):
    id: Optional[int] = Field(default=None, primary_key=True)
