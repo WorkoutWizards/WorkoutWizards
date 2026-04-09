@@ -54,7 +54,7 @@ class Meal(SQLModel, table = True):
    instructions: str
    prep_time: str
    protein: float
-   cards: float
+   carbs: float
    fat: float
    calories: float
     recipes: List["Recipe"] = Relationship(back_populates="meals", link_model=MealRecipe)
