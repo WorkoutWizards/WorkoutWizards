@@ -1,0 +1,35 @@
+/* Variables to use instead of having to remember all of the colours, etc */
+
+:root {
+    /* Background Colours */
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface-2: #1e1e1e;
+    
+    /* Borders */
+    --border: #2a2a2a;
+    --border-2: #3a3a3a;
+    
+    /* Accents */
+    --red: #e02020;
+    --red-dim: #7a1010;
+    --red-tint: rgba(224, 32, 32, 0.08);
+    
+    /* Text */
+    --text: #f0f0f0;
+    --text-muted: #777;
+    --text-dim: #444;
+    
+    /* Fonts */
+    --font-head: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    
+    /* Border radii */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-full: 9999px;
+    
+    /* Motion */
+    --transition: 0.15s ease;
+}

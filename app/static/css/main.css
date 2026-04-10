@@ -1,0 +1,6 @@
+/* All of the imports so only one file has to be in the html stylesheet */
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap');
+
+@import "tokens.css";
+@import "base.css";
