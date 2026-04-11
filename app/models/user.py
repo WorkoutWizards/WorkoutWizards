@@ -17,9 +17,11 @@ class User(UserBase, table=True):
     hip_width:Optional[int] = 0
     neck_width:Optional[int] = 0
     age:Optional[int] = 0
-    gender:Optional[str] = 0
+    gender:Optional[str] = None
     calorie_goal:Optional[float] = 0
     routines: list["Routine"] = Relationship(back_populates="user")
+    def numroutines(self):
+        return len(self.routines)
     #meals: list["Meals"] = Relationship(back_populates="user")
     
     user_bmi:Optional[float] = 0

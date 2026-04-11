@@ -27,9 +27,11 @@ async def create_routine(user: AuthDep, db: SessionDep,request:Request,
                          name = Form()):
     
     
-    routine = Routine(user_id=user.id,name = name,user = user)
+    routine = Routine(user_id=user.id,name = name)
+    
     db.add(routine)
     db.commit()
+   
     db.refresh(routine)
     getroutines = db.exec(select(Routine).where(Routine.user_id == user.id)).all()
     flash(request, "Routine created! Now Go To Workout Page to Exercises")

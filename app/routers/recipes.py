@@ -8,12 +8,26 @@ from app.models.models import Recipe
 from sqlmodel import select
 
 #added
-router = APIRouter(prefix="/api/recipes", tags=["recipes"])
+# router = APIRouter(prefix="/api/recipes", tags=["recipes"])
+# removed router prefix api/recipes
 
+#end of added
+#jinja endpoint to return the workout template
+@router.get("/recipes", response_class=HTMLResponse)
+async def get_workout(
+    user:AuthDep, db:SessionDep, request:Request
+):
+    return templates.TemplateResponse(
+        request= request,
+        name = "recipes.html",
+        context = {
+
+            "user":user
+        }
+    )
 @router.get("/")
 def get_recipes(db: SessionDep):
     return db.exec(select(Recipe)).all()
-
 @router.get("/{recipe_id}")
 def get_recipe(recipe_id: int, db: SessionDep):
     recipe = db.get(Recipe, recipe_id)
@@ -48,17 +62,3 @@ def delete_recipe(recipe_id: int, db: SessionDep):
     db.delete(recipe)
     db.commit()
     return {"message":"Recipe deleted"}
-#end of added
-#jinja endpoint to return the workout template
-@router.get("/recipes", response_class=HTMLResponse)
-async def get_workout(
-    user:AuthDep, db:SessionDep, request:Request
-):
-    return templates.TemplateResponse(
-        request= request,
-        name = "recipes.html",
-        context = {
-
-            "user":user
-        }
-    )

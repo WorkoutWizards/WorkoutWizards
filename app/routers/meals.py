@@ -275,7 +275,7 @@ default_meals = [
     "id": 26,
     "type": "snack",
     "name": "Boiled Eggs",
-    "image": "https://images.unsplash.com/photo-1604908176997-egg",
+    "image": "https://images.unsplash.com/photo-1574226516831-e1dff420e43e",
     "ingredients": ["eggs"],
     "instructions": "Boil eggs.",
     "prep_time": "10 mins",
@@ -294,13 +294,14 @@ def seed_meals(db):
         db.add(meal)
 
     db.commit()
+    print("Database initialized with meals API")
 
 
 # GET ALL MEALS
-@router.get("/")
-def get_meals(db: SessionDep):
-    seed_meals(db)
-    return db.exec(select(Meal)).all()
+# @router.get("/")
+# def get_meals(db: SessionDep):
+#     seed_meals(db)
+#     return db.exec(select(Meal)).all()
 
 
 # GET BY TYPE

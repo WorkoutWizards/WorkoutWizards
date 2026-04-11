@@ -1,4 +1,4 @@
-from sqlmodel import Field, SQLModel,Relationship
+from sqlmodel import JSON, Column, Field, SQLModel,Relationship
 from typing import Optional, TYPE_CHECKING, List
 if TYPE_CHECKING:                 #might breck the code
     from .user import User        #delete if it does
@@ -40,7 +40,7 @@ class MealRecipe(SQLModel, table = True):
 class Recipe(SQLModel, table = True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
-    ingredients: str
+    ingredients:  List[str]=Field(sa_column=Column(JSON))
     instructions: str
     prep_time: str
     meals: List["Meal"] = Relationship(back_populates="recipes", link_model=MealRecipe)
@@ -50,15 +50,18 @@ class Meal(SQLModel, table = True):
    name: str
    type: str
    image: str
-   ingredients: str
-   instructions: str
+   ingredients: List[str]=Field(sa_column=Column(JSON))
+   instructions:str
    prep_time: str
    protein: float
    carbs: float
    fat: float
    calories: float
+   
    recipes: List["Recipe"] = Relationship(back_populates="meals", link_model=MealRecipe)
+  
 
+   trackers: list["Tracker"] = Relationship(back_populates="meal")
 class Tracker(SQLModel, table = True):
    id: Optional[int] = Field(default=None, primary_key=True)
    meal_id: int =  Field(foreign_key="meal.id")
@@ -67,5 +70,5 @@ class Tracker(SQLModel, table = True):
    protein: float
    carbs: float
    fat: float
-
+   meal: Optional["Meal"] = Relationship(back_populates="trackers")
     

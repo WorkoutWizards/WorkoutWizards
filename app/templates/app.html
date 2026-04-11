@@ -20,6 +20,38 @@
       <div style="width:50px; height:50px; border-radius:50%; background:#ccc;"></div>
     </div>
 
+    <!-- ROUTINES + WORKOUTS -->
+     <p>Total routines: {{ user.numroutines() }}</p>
+    <div style="display:flex; gap:20px; margin-top:30px;">
+
+      <!-- ROUTINES -->
+      <div style="flex:1; background:white; padding:20px; border-radius:10px;">
+        <h4>My Routines</h4>
+
+        {% for routine in user.routines %}
+          <div style="border:1px solid #ddd; padding:10px; border-radius:8px; margin-top:10px; 
+          display:flex; justify-content:space-between;">
+            <span>{{ routine.name }}</span>
+            <a href="/workout">Open</a>
+          </div>
+        {% endfor %}
+
+        <a href="/routines" style="display:block; margin-top:10px;">+ AddWorkout</a>
+      </div>
+
+      <!-- RECENT WORKOUTS -->
+      <div style="flex:1; background:white; padding:20px; border-radius:10px;">
+        <h4>Recent Workouts</h4>
+
+        {% for workout in recent_workouts %}
+          <div style="border:1px solid #ddd; padding:10px; border-radius:8px; margin-top:10px;">
+            {{ workout.name }}
+          </div>
+        {% endfor %}
+
+      </div>
+
+    </div>
     <!-- STATS -->
     <div style="display:flex; gap:20px; margin-top:20px;">
       <div style="flex:1; background:white; padding:15px; border-radius:10px;">
@@ -39,52 +71,22 @@
     </div>
 
 
-    <!-- ROUTINES + WORKOUTS -->
-    <div style="display:flex; gap:20px; margin-top:30px;">
-
-      <!-- ROUTINES -->
-      <div style="flex:1; background:white; padding:20px; border-radius:10px;">
-        <h4>My Routines</h4>
-
-        {% for routine in routines %}
-          <div style="border:1px solid #ddd; padding:10px; border-radius:8px; margin-top:10px; display:flex; justify-content:space-between;">
-            <span>{{ routine.name }}</span>
-            <a href="/routines/{{ routine.id }}">Open</a>
-          </div>
-        {% endfor %}
-
-        <a href="/create-routine" style="display:block; margin-top:10px;">+ Create</a>
-      </div>
-
-      <!-- RECENT WORKOUTS -->
-      <div style="flex:1; background:white; padding:20px; border-radius:10px;">
-        <h4>Recent Workouts</h4>
-
-        {% for workout in recent_workouts %}
-          <div style="border:1px solid #ddd; padding:10px; border-radius:8px; margin-top:10px;">
-            {{ workout.name }}
-          </div>
-        {% endfor %}
-
-      </div>
-
-    </div>
 
 
     <!-- MEALS -->
     <div style="margin-top:30px; background:white; padding:20px; border-radius:10px;">
       <h4>Meals</h4>
-
+<!-- 
       <form method="post" action="/add-meal" style="margin-bottom:15px; display:flex; gap:10px;">
         <input type="text" name="meal_name" placeholder="Meal" required>
         <input type="number" name="calories" placeholder="Calories" required>
         <button type="submit">Add</button>
-      </form>
+      </form> -->
 
       <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        {% for meal in meals %}
+        {% for user in user_meals %}
           <div style="padding:10px; border:1px solid #ddd; border-radius:8px;">
-            {{ meal.name }} ({{ meal.calories }})
+            {{ user.meal.name }} ({{ meal.calories }})
           </div>
         {% endfor %}
       </div>
