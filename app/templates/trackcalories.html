@@ -2,7 +2,7 @@
 
 {% block subpage_content %}
 <style>
-    .card-image-custom {
+.card-image-custom {
   height: 200px;
   overflow: hidden;
   position: relative;
@@ -20,41 +20,47 @@
   border-radius: 6px;
   margin: 10px;
 }
-</style>
-<div class="container">
 
+/* MODAL SCROLL FIX */
+.modal-content {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+</style>
+
+<div class="container">
   <h4 class="center-align">My Calorie Tracker</h4>
 
-  <!-- FLASH MESSAGES -->
+  <div style="margin-bottom:20px;" class="center-align">
+    <button class="btn filter-btn" onclick="filterMeals('all')">All</button>
+    <button class="btn orange filter-btn" onclick="filterMeals('breakfast')">Breakfast</button>
+    <button class="btn green filter-btn" onclick="filterMeals('lunch')">Lunch</button>
+    <button class="btn blue filter-btn" onclick="filterMeals('dinner')">Dinner</button>
+    <button class="btn purple filter-btn" onclick="filterMeals('snack')">Snacks</button>
+  </div>
 
-<div style="margin-bottom:20px;" class="center-align">
-
-  <button class="btn filter-btn" onclick="filterMeals('all')">All</button>
-  <button class="btn orange filter-btn" onclick="filterMeals('breakfast')">Breakfast</button>
-  <button class="btn green filter-btn" onclick="filterMeals('lunch')">Lunch</button>
-  <button class="btn blue filter-btn" onclick="filterMeals('dinner')">Dinner</button>
-      <button class="btn blue filter-btn" onclick="filterMeals('snack')">Snacks</button>
-</div>
-  <!-- TRACKED MEALS -->
+  <!-- MEALS -->
   <div class="row">
     {% for log in logs %}
     <div class="col s12 m6 l4 meal-card" data-category="{{ log.meal.type }}">
       <div class="card hoverable">
 
-       <div class="card-image card-image-custom">
-  <img src="{{ log.meal.image or 'https://images.unsplash.com/photo-1560807707-8cc77767d783' }}">
-  <span class="card-title">{{ log.meal.name }}</span>
-</div>
+        <div class="card-image card-image-custom">
+          <img src="{{ log.meal.image or 'https://images.unsplash.com/photo-1560807707-8cc77767d783' }}">
+          <span class="card-title">{{ log.meal.name }}</span>
+        </div>
 
         <div class="card-content">
           <p><b>{{ log.calories }}</b> kcal</p>
-          <p><b>{{ log.meal.name }}</b> </p>
-          <p>Protein: {{ log.protein }}kg</p>
-          <p>Carbs: {{ log.carbs }}kg</p>
-          <p>Fat: {{ log.fat }}kg</p>
+          <p>Protein: {{ log.protein }}g</p>
+          <p>Carbs: {{ log.carbs }}g</p>
+          <p>Fat: {{ log.fat }}g</p>
         </div>
 
         <div class="card-action">
+
+          <!-- VIEW RECIPE MODAL BUTTON -->
+          <a class="btn modal-trigger teal" href="#modal-{{ log.id }}">View Recipe</a>
 
           <!-- DELETE -->
           <form action="/api/tracker/delete-meal/" method="POST" style="display:inline;">
@@ -62,7 +68,7 @@
             <button class="btn red waves-effect">Remove</button>
           </form>
 
-          <!-- UPDATE (simple example) -->
+          <!-- UPDATE -->
           <form action="/api/tracker/update-meal/" method="POST" style="display:inline;">
             <input type="hidden" name="tracker_id" value="{{ log.id }}">
             <input type="number" name="calories" placeholder="Edit kcal" style="width:80px;">
@@ -73,20 +79,42 @@
 
       </div>
     </div>
+
+    <!-- MODAL STRUCTURE -->
+    <div id="modal-{{ log.id }}" class="modal">
+      <div class="modal-content">
+        <h5>{{ log.meal.name }}</h5>
+
+        <h6>Ingredients</h6>
+        <p style="white-space: pre-line;">
+          {{ log.meal.ingredients or "No ingredients available." }}
+        </p>
+
+        <h6>Instructions</h6>
+        <p style="white-space: pre-line;">
+          {{ log.meal.instructions or "No instructions available." }}
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <a href="#!" class="modal-close btn grey">Close</a>
+      </div>
+    </div>
+
     {% endfor %}
   </div>
-
+</div>
 
 <!-- INIT MATERIALIZE -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     M.Modal.init(document.querySelectorAll('.modal'));
 });
+
 function filterMeals(category) {
   const meals = document.querySelectorAll('.meal-card');
   const buttons = document.querySelectorAll('.filter-btn');
 
-  // Highlight active button
   buttons.forEach(btn => btn.classList.remove('grey'));
   event.target.classList.add('grey');
 

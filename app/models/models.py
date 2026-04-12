@@ -51,7 +51,7 @@ class Meal(SQLModel, table = True):
    type: str
    image: str
    ingredients: List[str]=Field(sa_column=Column(JSON))
-   instructions:str
+   instructions:List[str]=Field(sa_column=Column(JSON))
    prep_time: str
    protein: float
    carbs: float
