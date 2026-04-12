@@ -26,10 +26,7 @@ class Exercise(SQLModel, table = True):
     muscle:str
     difficulty:Optional[str]
     instructions:Optional[str]
-    equip1:Optional[str] 
-    equip2:Optional[str] 
-    equip3:Optional[str] 
-    safety:Optional[str]
+    equipments:List[str]=Field(sa_column=Column(JSON))
     routines:list["RoutineExercise"] =Relationship(back_populates = "exercise")
 
   #USES LINK MODEL APPROACH for just the 2 keys  no attributes
