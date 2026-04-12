@@ -72,6 +72,20 @@
     .navbar {
         border-bottom: 1px solid #dee2e6;
     }
+    /* Sidebar Logo */
+.sidebar-logo {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    margin-bottom: 5px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+    transition: 0.3s;
+}
+
+/* Slight hover effect */
+.sidebar-logo:hover {
+    transform: scale(1.05);
+}
 </style>
 
 {% block additional_styles %}{% endblock %}
@@ -83,7 +97,14 @@
 <div id="wrapper">
 
     <nav id="sidebar" class="p-3 d-flex flex-column vh-100">
-        <h4 class="text-white mb-4 text-center py-4">{{user.username}}</h4>
+<div class="text-center mb-4 py-3">
+
+    <img src="{{ url_for('static', path='img/logo.png') }}"
+         class="sidebar-logo">
+
+    <small class="text-muted">Fitness App</small>
+
+</div>
 
         <ul class="nav nav-pills flex-column gap-2 flex-grow-1">
             <li class="nav-item">

@@ -5,7 +5,23 @@
 {% endblock %}
 
 {% block subpage_content %}
+<style>
+    /* Blur + dark overlay */
+.modal-backdrop.show {
+    opacity: 0.6;
+    backdrop-filter: blur(5px);
+}
 
+/* Smooth modal animation */
+.modal.fade .modal-dialog {
+    transform: scale(0.95);
+    transition: all 0.2s ease;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1);
+}
+</style>
 <div class="container-fluid">
 
     <!-- Title -->
@@ -120,33 +136,59 @@
                     {% if routine.exercises %}
                         <ul class="list-group">
 
-                        {% for ex in routine.exercises %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2">
+        {% for ex in routine.exercises %}
+        <li class="list-group-item">
 
-                            <span>
-                                <strong>{{ ex.exercise.name }}</strong>
-                                ({{ ex.exercise.muscle }}) - {{ ex.exercise.difficulty }}
-                            </span>
+    <!-- TOP ROW -->
+    <div class="d-flex justify-content-between align-items-start">
 
-                            <div class="action-buttons">
+        <div>
+            <h6 class="mb-1 fw-bold">{{ ex.exercise.name }}</h6>
 
-                                <button class="btn btn-sm btn-secondary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editExerciseModal-{{ routine.id }}-{{ loop.index }}">
-                                    Edit
-                                </button>
+            <small class="text-muted">
+                {{ ex.exercise.muscle }}  {{ ex.exercise.difficulty }}
+           
+            </small>
+            <small>     {{ex.exercise.equipments}}</small>
+        </div>
 
-                                <form method="POST" action="/delete-exercise/">
-                                    <input type="hidden" name="exercise_id" value="{{ex.exercise_id}}">
-                                    <input type="hidden" name="routine_id" value="{{ex.routine_id}}">
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        Delete
-                                    </button>
-                                </form>
+        <div class="action-buttons">
+            <button class="btn btn-sm btn-secondary"
+                data-bs-toggle="modal"
+                data-bs-target="#editExerciseModal-{{ routine.id }}-{{ loop.index }}">
+                Edit
+            </button>
 
-                            </div>
+            <form method="POST" action="/delete-exercise/">
+                <input type="hidden" name="exercise_id" value="{{ex.exercise_id}}">
+                <input type="hidden" name="routine_id" value="{{ex.routine_id}}">
+                <button type="submit" class="btn btn-sm btn-danger">
+                    Delete
+                </button>
+            </form>
+        </div>
 
-                        </li>
+    </div>
+
+
+
+                <!-- SAFETY INFO (COLLAPSIBLE) -->
+                {% if ex.exercise.instructions %}
+                <div class="mt-2">
+                    <button class="btn btn-sm btn-outline-info"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#safety-{{ routine.id }}-{{ loop.index }}">
+                        View Safety Tips
+                    </button>
+
+                    <div id="safety-{{ routine.id }}-{{ loop.index }}"
+                        class="collapse mt-2 small text-muted">
+                        {{ ex.exercise.instructions }}
+                    </div>
+                </div>
+                {% endif %}
+
+            </li>
                         {% endfor %}
 
                         </ul>
@@ -193,7 +235,7 @@
                                 <label>Difficulty</label>
                                 <input type="text" class="form-control" name="difficulty" value="{{ ex.exercise.difficulty }}">
                             </div>
-
+                           
                         </div>
 
                         <div class="modal-footer">
