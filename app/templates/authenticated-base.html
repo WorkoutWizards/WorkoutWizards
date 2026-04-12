@@ -88,7 +88,7 @@
         <ul class="nav nav-pills flex-column gap-2 flex-grow-1">
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/app' }}" href="/app">
-                    <span class="material-symbols-outlined me-2">people</span>
+                    <span class="material-symbols-outlined me-2">house</span>
                     Home
                 </a>
                   <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/workout' }}" href="/workout">
@@ -102,6 +102,10 @@
                   <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/recipes' }}" href="/recipes">
                     <span class="material-symbols-outlined me-2">chef_hat</span>
                     Recipes
+                </a>
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/myaccount/' }}" href="/myaccount/">
+                    <span class="material-symbols-outlined me-2">people</span>
+                    MyAccount
                 </a>
             </li>
             
