@@ -9,12 +9,14 @@
   <div class="row">
 
     <!-- ================= LEFT: PROFILE SUMMARY ================= -->
-    <div class="col s12 m4">
+    <div class="col-12 col-md-6">
 
       <div class="card z-depth-2" style="border-radius:15px;">
         <div class="card-content center-align">
 
-          <i class="material-icons large">account_circle</i>
+          <span class="material-symbols-outlined" style="font-size: 100px;">
+            account_circle
+          </span>
 
           <h5>{{ user.username or "User" }}</h5>
           <p class="grey-text">Your fitness profile</p>
@@ -77,7 +79,7 @@
 
             <!-- LINK TO TRACK CALORIES -->
             <div class="center-align" style="margin-top:15px;">
-              <a href="/trackcalories" class="btn blue">
+              <a href="/trackcalories" class="btn waves-effect waves-light blue d-inline-flex align-items-center">
                 View Meals
                 <i class="material-symbols-outlined me-2">chef_hat</i>
               </a>
@@ -122,7 +124,7 @@
     </div>
 
     <!-- ================= RIGHT: EDIT FORM ================= -->
-    <div class="col s12 m8">
+    <div class="col-12 col-md-6">
 
       <div class="card z-depth-2" style="border-radius:15px;">
         <div class="card-content">
@@ -130,66 +132,61 @@
           <span class="card-title">Update Your Info</span>
 
           <form method="POST" action="/update-account">
+            <div class="row g-3">
 
-            <div class="row">
+                <div class="col-md-6">
+                  <label class="form-label">Height (meters)</label>
+                  <input type="number" class="form-control" step="0.01" name="height_m" value="{{ user.height_m }}">
+                </div>
 
-              <!-- HEIGHT -->
-              <div class="input-field col s6">
-                <input type="number" step="0.01" name="height_m" value="{{ user.height_m }}">
-                <label class="active">Height (meters)</label>
+                <div class="col-md-6">
+                  <label class="form-label">Weight (kg)</label>
+                  <input type="number" class="form-control" step="0.1" name="weight_kg" value="{{ user.weight_kg }}">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Age</label>
+                  <input type="number" class="form-control" name="age" value="{{ user.age }}">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Gender</label>
+                  <select class="form-select browser-default" name="gender">
+                    <option value="" disabled>Select Gender</option>
+                    <option value="male" {% if user.gender == "male" %}selected{% endif %}>Male</option>
+                    <option value="female" {% if user.gender == "female" %}selected{% endif %}>Female</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Hip Width</label>
+                  <input type="number" class="form-control" step="0.1" name="hip_width" value="{{ user.hip_width }}">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Neck Width</label>
+                  <input type="number" class="form-control" step="0.1" name="neck_width" value="{{ user.neck_width }}">
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label">Daily Calorie Goal</label>
+                  <input type="number" class="form-control" step="0.1" name="calorie_goal" value="{{ user.calorie_goal }}">
+                </div>
+
               </div>
-
-              <!-- WEIGHT -->
-              <div class="input-field col s6">
-                <input type="number" step="0.1" name="weight_kg" value="{{ user.weight_kg }}">
-                <label class="active">Weight (kg)</label>
-              </div>
-
-              <!-- AGE -->
-              <div class="input-field col s6">
-                <input type="number" name="age" value="{{ user.age }}">
-                <label class="active">Age</label>
-              </div>
-
-              <!-- GENDER -->
-              <div class="input-field col s6">
-                <select name="gender">
-                  <option value="" disabled>Select Gender</option>
-                  <option value="male" {% if user.gender == "male" %}selected{% endif %}>Male</option>
-                  <option value="female" {% if user.gender == "female" %}selected{% endif %}>Female</option>
-                </select>
-                <label>Gender</label>
-              </div>
-
-              <!-- HIP WIDTH -->
-              <div class="input-field col s6">
-                <input type="number" step="0.1" name="hip_width" value="{{ user.hip_width }}">
-                <label class="active">Hip Width</label>
-              </div>
-
-              <!-- NECK WIDTH -->
-              <div class="input-field col s6">
-                <input type="number" step="0.1" name="neck_width" value="{{ user.neck_width }}">
-                <label class="active">Neck Width</label>
-              </div>
-
-              <!-- CALORIE GOAL -->
-              <div class="input-field col s12">
-                <input type="number" step="0.1" name="calorie_goal" value="{{ user.calorie_goal }}">
-                <label class="active">Daily Calorie Goal</label>
-              </div>
-
-            </div>
-
             <!-- SUBMIT BUTTON -->
             <div class="center-align">
-              <button class="btn waves-effect waves-light blue" type="submit">
+              <button class="btn waves-effect waves-light blue d-inline-flex align-items-center" type="submit">
                 Update Profile
-             
+                <span class="material-symbols-outlined">
+                  save
+                </span>
               </button>
             </div>
 
           </form>
+
+          
 
         </div>
       </div>
