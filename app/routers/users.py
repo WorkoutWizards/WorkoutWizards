@@ -20,10 +20,13 @@ async def list_users(request: Request, db: SessionDep):
 @router.get("/app")
 async def get_user(request:Request, db:SessionDep, user:AuthDep):
     user_routines = db.exec(select(Routine)).all()
-    user_meals = db.exec(select(Tracker).where(Tracker.user_id == user.id)).all()
+    user_tracker = db.exec(select(Tracker).where(Tracker.user_id == user.id)).all()
+    user_meals = db.exec(select(Meal).where(Meal.id ==user_tracker.meal_id )).all()
     totalCalories = 0
     for meals in user_meals:
-        totalCalories +=meals.calories
+        totalCalories = totalCalories + meals.calories
+        print(meals)
+    print(totalCalories)
     return templates.TemplateResponse(
         request=request,
         name="app.html",

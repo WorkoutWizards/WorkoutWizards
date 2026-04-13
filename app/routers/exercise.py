@@ -46,6 +46,8 @@ async def get_exercises(user:AuthDep,db:SessionDep, request:Request,
                     muscle=e.get("muscle", ""),
                     difficulty=e.get("difficulty"),
                     instructions=e.get("instructions"),
+        
+                    equipments = e.get('equipments',[])
             )
            
             db.add(exercise)
