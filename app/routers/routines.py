@@ -146,7 +146,7 @@ async def set_active(
      db.add(get_routine)
      db.commit()
      return RedirectResponse(
-        url = f"/workout?routine_id={routine_id}",
+        url = f"/app",
          status_code=303
     )
     
