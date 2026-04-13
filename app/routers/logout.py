@@ -6,7 +6,7 @@ from app.services.auth_service import AuthService
 from app.repositories.user import UserRepository
 from app.utilities.flash import flash
 from app.config import get_settings
-
+from app.routers.users import recent_workouts
 # View route responsible for UI
 @router.get("/logout")
 async def logout(request: Request):
@@ -17,4 +17,5 @@ async def logout(request: Request):
         samesite="none",
         secure=True
     )
+    recent_workouts.clear()
     return response

@@ -131,7 +131,25 @@ async def edit_exercise(
             "routines": getroutines,
         }
     )
-
+@router.post("/set-active")
+async def set_active(
+        user: AuthDep,
+    db: SessionDep,
+    request: Request,
+    routine_id=Form(),
+):
+     get_routine = db.get(Routine,routine_id)
+     if (get_routine.is_active):
+         get_routine.is_active = False
+     else:
+         get_routine.is_active = True
+     db.add(get_routine)
+     db.commit()
+     return RedirectResponse(
+        url = f"/workout?routine_id={routine_id}",
+         status_code=303
+    )
+    
 @router.post("/delete-routine/")
 async def delete_exercise(
     user: AuthDep,

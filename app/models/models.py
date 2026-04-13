@@ -15,6 +15,7 @@ class RoutineExercise(SQLModel, table =True):
 class Routine(SQLModel, table = True):
     id:int = Field(primary_key = True)
     name:str
+    is_active:bool = False
     user_id:int = Field(foreign_key = "user.id")
     user: Optional["User"] = Relationship(back_populates = "routines")
     exercises: list["RoutineExercise"] = Relationship(back_populates="routine")

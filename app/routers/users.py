@@ -10,23 +10,20 @@ from app.utilities.flash import flash
 from app.schemas import UserResponse
 from . import router, templates
 from app.models.models import *
-# API endpoint for listing users
-@api_router.get("/users", response_model=list[UserResponse])
-async def list_users(request: Request, db: SessionDep):
-    user_repo = UserRepository(db)
-    user_service = UserService(user_repo)
-    return user_service.get_all_users()
-
+recent_workouts = []#global list to track user recent workouts
 @router.get("/app")
 async def get_user(request:Request, db:SessionDep, user:AuthDep):
     user_routines = db.exec(select(Routine)).all()
-    user_tracker = db.exec(select(Tracker).where(Tracker.user_id == user.id)).all()
-    user_meals = db.exec(select(Meal).where(Meal.id ==user_tracker.meal_id )).all()
-    totalCalories = 0
-    for meals in user_meals:
-        totalCalories = totalCalories + meals.calories
-        print(meals)
-    print(totalCalories)
+    user_tracker = db.exec(
+    select(Tracker).where(Tracker.user_id == user.id)
+).all()
+    active_routines = db.exec(select(Routine).where(Routine.is_active == True)).all()
+
+    totalCalories = sum(t.meal.calories for t in user_tracker if t.meal)
+    # for t in user_tracker:
+    #     print("TRACKER:", t.id, "MEAL:", t.meal)
+    if active_routines not in recent_workouts:
+        recent_workouts.append(active_routines)
     return templates.TemplateResponse(
         request=request,
         name="app.html",
@@ -34,9 +31,16 @@ async def get_user(request:Request, db:SessionDep, user:AuthDep):
             "user": user,
             "routines": user_routines,
             "calories": totalCalories,
+            "active_routine":active_routines,
+            "recent_workouts":recent_workouts,
             "workouts_count": len(user_routines),
-            # "active_routine": None,
-            # "recent_workouts": [],
-            "user_meals": user_meals
+            "user_meals": user_tracker
         }
     )
+# API endpoint for listing users
+@api_router.get("/users", response_model=list[UserResponse])
+async def list_users(request: Request, db: SessionDep):
+    user_repo = UserRepository(db)
+    user_service = UserService(user_repo)
+    return user_service.get_all_users()
+

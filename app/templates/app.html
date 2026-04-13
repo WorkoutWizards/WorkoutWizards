@@ -122,10 +122,41 @@
       <h5 class="fw-bold">My Routines</h5>
 
       {% for routine in user.routines %}
-        <div class="routine-item">
-          <span>{{ routine.name }}</span>
-          <a href="/workout" class="text-primary fw-semibold">Open</a>
-        </div>
+       <div class="routine-item">
+
+  <div>
+    <span>{{ routine.name }}</span>
+
+    {% if routine.is_active %}
+      <span style="color:green; font-size:12px;">● Active</span>
+    {% else %}
+      <span style="color:gray; font-size:12px;">● Inactive</span>
+    {% endif %}
+  </div>
+
+  <div style="display:flex; gap:10px;">
+
+    <!-- OPEN -->
+    <a href="/workout?routine_id={{ routine.id }}"
+       class="text-primary fw-semibold">
+       Open
+    </a>
+
+    <!-- TOGGLE ACTIVE -->
+    <form method="POST" action="/set-active" style="margin:0;">
+      <input type="hidden" name="routine_id" value="{{ routine.id }}">
+
+      <button type="submit"
+        style="border:none; background:none; cursor:pointer;
+               color: {{ 'red' if routine.is_active else 'green' }}; font-weight:600;">
+        
+        {{ 'Deactivate' if routine.is_active else 'Activate' }}
+      </button>
+    </form>
+
+  </div>
+
+</div>
       {% endfor %}
 
       <a href="/routines" class="btn btn-sm btn-primary mt-2">
@@ -166,7 +197,9 @@
     <div class="card-ui stat-box">
       <h5>Active Routine</h5>
       <h6 class="fw-semibold">
-        {{ active_routine.name if active_routine else "None" }}
+        {%for routine in active_routine%}
+        {{ routine.name if routine else "None" }}
+        {%endfor%}
       </h6>
     </div>
 
