@@ -3,38 +3,31 @@
 {% block title %}Log In{% endblock %}
  
 {% block content %}
-<form id="loginForm" method="POST">
- 
-    <div class="form-group">
-        <label class="form-label" for="username">Username</label>
-        <input
-            class="form-input"
-            type="text"
-            id="username"
-            name="username"
-            placeholder="your_username"
-            required
-        >
-    </div>
-    
-    <div class="form-group">
-        <label class="form-label" for="password">Password</label>
-        <input
-            class="form-input"
-            type="password"
-            id="password"
-            name="password"
-            placeholder="••••••••"
-            required
-        >
-    </div>
-    
-    <button type="submit" class="btn btn--primary btn--full">LOG IN</button>
-</form>
- 
-<p class="auth-card__footer">
-    Don't have an account?
-    <a href="{{url_for('register_view')}}">Sign up</a>
-</p>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/login.css') }}">
+</head>
 
+<div class="auth-box">
+    <div class="auth-container">
+        <form id="auth-login-form" method="POST">
+            <div class="auth-top-header">
+                <h2 class="auth-form-title">LOGIN</h2>
+            </div>
+            <div class="auth-input-field">
+                <input type="text" class="input" id="login-username" placeholder="Username" name="username" required>
+            </div>
+            <div class="auth-input-field">
+                <input type="password" class="input" id="login-password" placeholder="••••••••" name="password" required>
+            </div>
+            <div class="auth-input-field">
+                <button type="submit" class="submit">LOG IN</button>
+            </div>
+            <div class="auth-footer">
+                Don't have an account?
+                <a class="auth-link" href="{{url_for('register_view')}}">Sign up</a>
+            </div>
+    
+        </form>
+    </div>
+</div>
 {% endblock %}
