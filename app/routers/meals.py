@@ -711,11 +711,11 @@ def seed_meals(db):
     print("Database initialized with meals API")
 
 
-# GET ALL MEALS
-# @router.get("/")
-# def get_meals(db: SessionDep):
-#     seed_meals(db)
-#     return db.exec(select(Meal)).all()
+#GET ALL MEALS
+@router.get("/")
+def get_meals(db: SessionDep):
+    seed_meals(db)
+    return db.exec(select(Meal)).all()
 
 
 # GET BY TYPE
