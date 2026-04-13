@@ -13,7 +13,7 @@ from app.models.models import *
 recent_workouts = []#global list to track user recent workouts
 @router.get("/app")
 async def get_user(request:Request, db:SessionDep, user:AuthDep):
-    user_routines = db.exec(select(Routine)).all()
+    user_routines = db.exec(select(Routine).where(Routine.user_id == user.id)).all()
     user_tracker = db.exec(
     select(Tracker).where(Tracker.user_id == user.id)
 ).all()
