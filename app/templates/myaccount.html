@@ -64,18 +64,20 @@
             <div class="progress">
               <div class="determinate {{ bar_color }}" style="width: {{progress}}%;"></div>
             </div>
-
-            <p>
-              <b>{{ total_calories or 0 }}</b> / {{ user.calorie_goal or 0 }} kcal
-            </p>
-
-            <p>
-              Remaining:
-              <b>
-                {{ (user.calorie_goal - total_calories) if user.calorie_goal else 0 }}
-                kcal
-              </b>
-            </p>
+  <p>
+    {% if user.calorie_goal %}
+      {% set remaining = user.calorie_goal - total_calories %}
+      
+      {% if remaining > 0 %}
+        Remaining: <b>{{ remaining }} kcal</b>
+      {% else %}
+        Over by: <b>{{ remaining | abs }} kcal</b>
+      {% endif %}
+      
+    {% else %}
+      Remaining: <b>0 kcal</b>
+    {% endif %}
+  </p>
 
             <!-- LINK TO TRACK CALORIES -->
             <div class="center-align" style="margin-top:15px;">
