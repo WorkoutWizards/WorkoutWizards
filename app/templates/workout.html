@@ -149,7 +149,11 @@
                 {{ ex.exercise.muscle }}  {{ ex.exercise.difficulty }}
            
             </small>
-            <small>     {{ex.exercise.equipments}}</small>
+            <small>     
+                {%if ex.exercise.equipments%}
+                {{ex.exercise.equipments}}
+                {%endif%}
+            </small>
         </div>
 
         <div class="action-buttons">
