@@ -26,10 +26,12 @@
         background: black;
         color: #fff;
         transition: all 0.3s;
-        position: sticky;
         top: 0;
         height: 100vh;
         overflow-y: auto;
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
     }
 
     #sidebar.collapsed {
@@ -57,10 +59,11 @@
     }
 
     #content {
-        flex-grow: 1; 
+        flex-grow: 1;
         padding: 1rem;
         display: flex;
         flex-direction: column;
+        margin-top: 70px;
     }
 
     .table-responsive {
@@ -86,7 +89,19 @@
     }
 
     .navbar {
-        border-bottom: 1px solid #dee2e6;
+        position: fixed;
+        top: 0;
+        left: 250px;
+        right: 0;
+        z-index: 999;
+        border:none !important;
+        background-color: black !important;
+        color: white;
+    }
+    
+    #topnav {
+        width: calc(99% - 250px);
+        left: 250px;
     }
     /* Sidebar Logo */
 .sidebar-logo {
@@ -111,7 +126,6 @@
     background-color: white !important;
     box-shadow: 0px 0px 15px var(--red-dim);
 }
-
 
 </style>
 
@@ -165,9 +179,9 @@
     </nav>
 
     <div id="content">
-        <nav class="navbar navbar-expand-lg bg-white mb-4 px-3 rounded-3 shadow-sm">
-            <button class="btn btn-outline-secondary" id="menu-toggle">
-                <span class="material-symbols-outlined md-dark">menu</span>
+        <nav class="navbar navbar-expand-lg mb-4 px-3" id="topnav">
+            <button class="btn btn-outline-light" id="menu-toggle">
+                <span class="material-symbols-outlined fw-semibold">menu</span>
             </button>
 
             <div class="ms-auto d-flex align-items-center gap-3">
@@ -194,7 +208,19 @@
 
 <script>
     document.getElementById("menu-toggle").addEventListener("click", function () {
-        document.getElementById("sidebar").classList.toggle("collapsed");
+
+        let sidebar = document.getElementById("sidebar");
+        let topnav = document.getElementById("topnav");
+
+        sidebar.classList.toggle("collapsed");
+
+        if (sidebar.classList.contains('collapsed')){
+            topnav.style.left = "0px";
+            topnav.style.width = "99%";
+        } else {
+            topnav.style.left = "250px";
+            topnav.style.width = "calc(99% - 250px)";
+        }
     });
 </script>
 
