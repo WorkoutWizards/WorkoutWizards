@@ -28,7 +28,7 @@ function renderMeals(meals) {
             <h5>${meal.name}</h5>
             <p>${meal.calories} kcal</p>
 
-            <button onclick="addToTracker(${meal.id})">
+            <button onclick="addToTracker(${meal.id})" class="btn btn-success">
                 Add to Tracker
             </button>
 
