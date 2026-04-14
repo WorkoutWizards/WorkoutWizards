@@ -1,11 +1,36 @@
 {% extends "authenticated-base.html" %}
 
 {% block subpage_content %}
+<style>
+    th, td{
+        color: black !important;
+    }
+</style>
 <h1>Exercises</h1>
 
 <form method="get" action="/api/exercises">
-    <input type="text" name="muscle" placeholder="Enter muscle (e.g. chest)" value="{{ muscle or '' }}">
-    <button type="submit">Search</button>
+        <div class="col-12">
+        <label class="form-label">Select Muscle Group</label>
+        <select class="form-select browser-default" name="muscle" onchange="this.form.submit()">
+            <option value="" disabled {% if not muscle %}selected{% endif %}>Select Muscle Group</option>
+    
+            <option value="abdominals" {% if muscle == "abdominals" %}selected{% endif %}>Abdominals</option>
+            <option value="calves" {% if muscle == "calves" %}selected{% endif %}>Calves</option>
+            <option value="forearms" {% if muscle == "forearms" %}selected{% endif %}>Forearms</option>
+            <option value="hamstrings" {% if muscle == "hamstrings" %}selected{% endif %}>Hamstrings</option>
+            <option value="lower_back" {% if muscle == "lower_back" %}selected{% endif %}>Lower Back</option>
+            <option value="neck" {% if muscle == "neck" %}selected{% endif %}>Neck</option>
+            <option value="traps" {% if muscle == "traps" %}selected{% endif %}>Traps</option>
+            <option value="adductors" {% if muscle == "adductors" %}selected{% endif %}>Adductors</option>
+            <option value="biceps" {% if muscle == "biceps" %}selected{% endif %}>Biceps</option>
+            <option value="chest" {% if muscle == "chest" %}selected{% endif %}>Chest</option>
+            <option value="glutes" {% if muscle == "glutes" %}selected{% endif %}>Glutes</option>
+            <option value="lats" {% if muscle == "lats" %}selected{% endif %}>Lats</option>
+            <option value="middle_back" {% if muscle == "middle_back" %}selected{% endif %}>Middle Back</option>
+            <option value="quadriceps" {% if muscle == "quadriceps" %}selected{% endif %}>Quadriceps</option>
+            <option value="triceps" {% if muscle == "triceps" %}selected{% endif %}>Triceps</option>
+        </select>
+    </div>
 </form>
 
 <table border="1" style="margin-top:20px;">
@@ -29,7 +54,7 @@
          <td><!--MAKE THE ADDWORKOUT BUTTON FUNCTIONAL-->
         
       <td>
-    <button type="button" onclick="addWorkout(
+    <button type="button" class="btn btn-success" onclick="addWorkout(
         '{{ ex.id }}',
         '{{ ex.name }}',
         '{{ ex.type }}',

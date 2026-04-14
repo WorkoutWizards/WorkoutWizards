@@ -21,9 +21,15 @@ API_KEY_EXERCISES = os.getenv("API_KEY_EXERCISE")
 
   #route to return the api data to be displayed to the user   
 @api_router.get("/exercises")
-async def get_exercises(user:AuthDep,db:SessionDep, request:Request,
-                        muscle = Query()):
-    
+async def get_exercises(
+    user: AuthDep, 
+    db: SessionDep, 
+    request: Request,
+    muscle: Optional[str] = Query(None)
+):
+    exercises = []
+    exercise_list = []
+
     if muscle:
         response = requests.get(
             "https://api.api-ninjas.com/v1/exercises",
@@ -31,41 +37,41 @@ async def get_exercises(user:AuthDep,db:SessionDep, request:Request,
             params={"muscle": muscle}
         )
         
-        exercises = response.json()
-    exercise_list = []
-    for e in exercises:
-        exist = db.exec(
-            select(Exercise).where(Exercise.name == e["name"])
-        ).one_or_none()
-       
-        if not exist:
+        if response.status_code == 200:
+            exercises = response.json()
 
-            exercise = Exercise(
-                name=e["name"],
-                    type=e.get("type", ""),
-                    muscle=e.get("muscle", ""),
-                    difficulty=e.get("difficulty"),
-                    instructions=e.get("instructions"),
-        
-                    equipments = e.get('equipments',[])
-            )
-           
-            db.add(exercise)
-        exercise_list.append(exist) 
-    db.commit()
-    print(exercise_list)
+            for e in exercises:
+                exist = db.exec(
+                    select(Exercise).where(Exercise.name == e["name"])
+                ).one_or_none()
+            
+                if not exist:
+                    new_exercise = Exercise(
+                        name=e["name"],
+                        type=e.get("type", ""),
+                        muscle=e.get("muscle", ""),
+                        difficulty=e.get("difficulty"),
+                        instructions=e.get("instructions"),
+                        equipments=e.get('equipment', [])
+                    )
+                    db.add(new_exercise)
+                    db.flush()
+                    exercise_list.append(new_exercise)
+                else:
+                    exercise_list.append(exist)
+
+            db.commit()
+
     return templates.TemplateResponse(
-        request = request,
-        name = "routines.html",
-        context = {
-            "user":user,
-              "exercises": exercises,
-              "exercise_db":exercise_list,
-                "muscle": muscle,
-                
-            }
+        request=request,
+        name="routines.html",
+        context={
+            "user": user,
+            "exercises": exercises,
+            "exercise_db": exercise_list,
+            "muscle": muscle,
+        }
     )
-    
 
 #endpoints to manipulate data in the tables
 
