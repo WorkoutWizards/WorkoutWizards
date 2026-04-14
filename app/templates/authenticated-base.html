@@ -32,6 +32,8 @@
         position: fixed;
         width: 100%;
         z-index: 1000;
+        scrollbar-width: thin;
+        scrollbar-color: var(--red) black;
     }
 
     #sidebar.collapsed {
@@ -100,7 +102,7 @@
     }
     
     #topnav {
-        width: calc(99% - 250px);
+        width: calc(100% - 250px);
         left: 250px;
     }
     /* Sidebar Logo */
@@ -216,10 +218,10 @@
 
         if (sidebar.classList.contains('collapsed')){
             topnav.style.left = "0px";
-            topnav.style.width = "99%";
+            topnav.style.width = "100%";
         } else {
             topnav.style.left = "250px";
-            topnav.style.width = "calc(99% - 250px)";
+            topnav.style.width = "calc(100% - 250px)";
         }
     });
 </script>
