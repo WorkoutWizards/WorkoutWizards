@@ -24,7 +24,7 @@ async def get_user(request:Request, db:SessionDep, user:AuthDep):
     #     print("TRACKER:", t.id, "MEAL:", t.meal)
         if t not in recent_workouts:
             recent_workouts.append(t)
-            
+    calorie_goal = user.calorie_goal        
     return templates.TemplateResponse(
         request=request,
         name="app.html",
@@ -32,6 +32,7 @@ async def get_user(request:Request, db:SessionDep, user:AuthDep):
             "user": user,
             "routines": user_routines,
             "calories": totalCalories,
+            "calorie_goal":calorie_goal,
             "active_routine":active_routines,
             "recent_workouts":recent_workouts,
             "workouts_count": len(user_routines),
