@@ -1,15 +1,35 @@
 {% extends "authenticated-base.html" %}
 
+{% block external_js %}
+<script src="{{ url_for('static', path='js/app.js') }}"></script>
+{% endblock %}
+
 {% block subpage_content %}
 <style>
     th, td{
         color: black !important;
     }
+
+     /* Blur + dark overlay */
+.modal-backdrop.show {
+    opacity: 0.6;
+    backdrop-filter: blur(5px);
+}
+
+/* Smooth modal animation */
+.modal.fade .modal-dialog {
+    transform: scale(0.95);
+    transition: all 0.2s ease;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1);
+}
 </style>
 <h1>Exercises</h1>
 
 <form method="get" action="/api/exercises">
-        <div class="col-12">
+    <div class="col-12">
         <label class="form-label">Select Muscle Group</label>
         <select class="form-select browser-default" name="muscle" onchange="this.form.submit()">
             <option value="" disabled {% if not muscle %}selected{% endif %}>Select Muscle Group</option>
@@ -54,15 +74,56 @@
          <td><!--MAKE THE ADDWORKOUT BUTTON FUNCTIONAL-->
         
       <td>
-    <button type="button" class="btn btn-success" onclick="addWorkout(
-        '{{ ex.id }}',
-        '{{ ex.name }}',
-        '{{ ex.type }}',
-        '{{ ex.muscle }}',
-        '{{ ex.difficulty }}'
-    )">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#addExercise-{{ex.id}}">
         Add Workout
     </button>
+
+    <div class="modal fade" id="addExercise-{{ex.id}}" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <form method="POST" action="/add_exercise/">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Chose Routine</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="mb-2">
+                            <label>Choose a rotine:</label>
+
+                            <select class="form-select browser-default" name="routine_id">
+
+                                {%for routine in routines%}
+                                    <option value="{{routine.id}}">{{routine.name}}</option>
+                                {%endfor%}
+                            </select>
+
+                            <input type="hidden" name= "exercise_id" value="{{ex.id}}">
+
+                            <input type="hidden" name= "name" value="{{ex.name}}">
+
+                            <input type="hidden" name= "muscle" value="{{ex.muscle}}">
+                            
+                            <input type="hidden" name= "type" value="{{ex.type}}">
+
+                            <input type="hidden" name= "difficulty" value="{{ex.difficulty}}">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
 </td>
         </td>
     
@@ -91,36 +152,4 @@
     </div>
 </div>
     </div>
-   <script>
-function addWorkout(id, name, type, muscle, difficulty) {
-    let routine_id = prompt("Enter your Routine ID:");
-
-    if (!routine_id) {
-        return; // user cancelled
-    }
-
-    // create form dynamically
-    let form = document.createElement("form");
-    form.method = "POST";
-    form.action = "/add_exercise/";
-
-    function addField(name, value) {
-        let input = document.createElement("input");
-        input.type = "hidden";
-        input.name = name;
-        input.value = value;
-        form.appendChild(input);
-    }
-
-    addField("routine_id", routine_id);
-    addField("exercise_id", id);
-    addField("name", name);
-    addField("type", type);
-    addField("muscle", muscle);
-    addField("difficulty", difficulty);
-
-    document.body.appendChild(form);
-    form.submit();
-}
-</script>
 {% endblock %}
