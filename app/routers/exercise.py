@@ -62,6 +62,9 @@ async def get_exercises(
 
             db.commit()
 
+    routines = db.exec(
+                    select(Routine).where(Routine.user_id == user.id)
+                ).all()
     return templates.TemplateResponse(
         request=request,
         name="routines.html",
@@ -70,6 +73,7 @@ async def get_exercises(
             "exercises": exercises,
             "exercise_db": exercise_list,
             "muscle": muscle,
+            "routines": routines
         }
     )
 
