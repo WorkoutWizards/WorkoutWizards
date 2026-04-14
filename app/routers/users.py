@@ -20,10 +20,11 @@ async def get_user(request:Request, db:SessionDep, user:AuthDep):
     active_routines = db.exec(select(Routine).where(Routine.is_active == True)).all()
 
     totalCalories = sum(t.meal.calories for t in user_tracker if t.meal)
-    # for t in user_tracker:
+    for t in active_routines:
     #     print("TRACKER:", t.id, "MEAL:", t.meal)
-    if active_routines not in recent_workouts:
-        recent_workouts.append(active_routines)
+        if t not in recent_workouts:
+            recent_workouts.append(t)
+            
     return templates.TemplateResponse(
         request=request,
         name="app.html",
